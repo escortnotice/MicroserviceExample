@@ -14,3 +14,6 @@ APi Gateway using zuul:
 Get DB-service: http://localhost:8761/api/db-service/rest/db/userstockquotes/sam
 Get Stock-service: http://localhost:8761/api/stock-service/rest/stock/Rocky
 
+UI:
+http://localhost:8080/html/add-stocks.html
+
