@@ -1,0 +1,22 @@
+spring:
+  application:
+    name: eureka-server
+server:
+  port: 8761
+    
+eureka:
+  client:
+    register-with-eureka: false
+    fetch-registry: false
+    eureka-service-url-poll-interval-seconds: 200
+    
+zuul:
+  prefix: /api
+  routes:
+    db-service:
+      path: /db-service/**
+      url: http://localhost:8300
+    stock-service:
+      path: /stock-service/**
+      url: http://localhost:8301
+      
