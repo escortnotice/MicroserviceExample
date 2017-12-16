@@ -1,5 +1,6 @@
 package com.example.restcontroller;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -10,6 +11,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
+
 @RestController
 @RequestMapping("rest/stock")
 public class StockResource {
@@ -17,16 +20,13 @@ public class StockResource {
 	@Autowired
 	RestTemplate restTemplate;
 	
+	@HystrixCommand(groupKey="fallback", commandKey="fallback", fallbackMethod="getStockFallbackMethod")
 	@SuppressWarnings("unchecked")
 	@GetMapping("/{username}")
 	public List<String> getStock(@PathVariable("username") final String username){
 		System.out.println("beginning of db call");
 		System.out.println("username: "+ username);
 		List<String> quotes = restTemplate.getForObject("http://db-service/rest/db/userstockquotes/" + username, List.class);
-//		ResponseEntity<List<String>> quoteResponse = restTemplate.exchange("http://db-service/rest/db/userstockquotes/" + username, HttpMethod.GET,null,new ParameterizedTypeReference<List<String>>() {
-//		});
-		
-		//List<String> quotes = quoteResponse.getBody();
 		System.out.println("Count of quotes:"+ quotes.size());
 		
 		return quotes.stream()
@@ -46,5 +46,11 @@ public class StockResource {
 			e.printStackTrace();
 			return "";
 		}
+	}
+	
+	//fallback method for any issue calling the other service, should have same signature as the method it is falling back for
+	public List<String> getStockFallbackMethod(String userName){
+		System.out.println("in fallback method");
+		return Collections.emptyList();
 	}
 }
