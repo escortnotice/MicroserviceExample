@@ -2,9 +2,12 @@
 
 
 #urls:
+
 Db-Service
 Delete: localhost:8300/rest/db/userstockquotes/delete/Sam 
+
 Post: localhost:8300/rest/db/userstockquotes/add 
+
 Get: localhost:8300/rest/db/userstockquotes/sam 
 
 Stock-service
