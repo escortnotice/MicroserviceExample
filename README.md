@@ -1,7 +1,7 @@
 # MicroserviceExample
 
 
-# urls:
+# URLs:
 
 Db-Service
 Delete: localhost:8300/rest/db/userstockquotes/delete/Sam 
